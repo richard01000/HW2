@@ -16,7 +16,7 @@ struct mainMenuLoopTexts {//must complete with variants
     std::string textGeneralOperations = "\n\n|==================|\n|General operations|\n|==================|\n\nWhat do you want to do?\n\n1 - create faculty\n2 - display faculties\n3 - search student and show faculty\n4 - display all faculties of a field\n\n5 - Back\n6 - Quit Program\n\nyour input> ";
     std::string textFacultyOperations = "\n\n|==================|\n|Faculty operations|\n|==================|\n\nWhat do you want to do?\n\n1 - display enroled students\n2 - display graduated stundents\n3 - check if student belongs to faculty\n\n4 - Back\n5 - Quit Program\n\nyour input> ";
     std::string textStudentOperations = "\n\n|==================|\n|Student operations|\n|==================|\n\nWhat do you want to do?\n\n1 -";
-    // astai pizdet aistea is la general operations
+    // this shit is crazy all this must be in general operations
     std::string textCreateFaculty;
     std::string searchStundentFaculty;
     std::string displayUniversityFaculties;
@@ -35,7 +35,7 @@ class student {
 class faculty {
     std::string name = "Name: ";
     std::string abbreviation = "Abbreviation: ";
-    std::list<std::string> students {//must find a way to work with this bitch togheder with enumeration
+    std::list<std::string> students {//must find a way to work with this bitch together with enumeration
         "1",
         "2",
         "3"
@@ -51,25 +51,30 @@ class faculty {
 class generalOperations{
     std::list<std::string> faculties;
     public:
-    generalOperations(){// pinace lucreaza sa pun elemente in lista amu prosta treb de facut mai multe liste si gt cu huitaua asta
-        std::cout<<txt.textGeneralOperations;
+    generalOperations(){// for now it works to input and output elements into a list now the only thing left here is to make more lists like this bitch
+        std::cout<<"Testing for now --> ";
         std::cin>>txt.userChoice;
-        if(txt.userChoice==1){
-            std::string da;
-            std::cout<<txt.textStudentOperations;
-            std::cin >> da;
-            faculties.push_back(da);
-            std::cin >> da;
-            faculties.push_back(da);
-            for(std::string a : faculties){// variabila (string a) ia valoarea fiecariu element din faculties (range based loop77)
+        if(txt.userChoice==1 || txt.userChoice==2){
+            //if(txt.userChoice==1){
+            std::string listElement;    // AAAAAAAAAAAA dosent work because is in a IF statement and all this bullshit only works if (userChoice == 1)
+            std::cout<<"Enter faculty: ";
+            std::cin.ignore();// if i dont use cin.ingnore(); then the program is bitching and is skiping the getline(); ending the program
+            getline(std::cin, listElement);
+            faculties.push_back(listElement);
+            //}
+            //if(txt.userChoice==2){
+            //this if for showing the list of faculties
+            for(std::string a : faculties){// the variable (string a) takes the value of the components inside faculties one by one and goes trough loop (range based loop77)
                std::cout<<a<<std::endl;
             }
-
+        //}
         }
+
     
     }
 };
 int main() {
+    generalOperations();
     generalOperations();
     //
     //  test loop texts
