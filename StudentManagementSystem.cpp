@@ -1,13 +1,28 @@
 //
-// File:    HW2.cpp
+// File:        StudentManagementSystem.cpp
 // Description: Student Management System
-// Author: Potop Richard
-// Github: https://github.com/richard01000/HW2
+// Author:      Potop Richard
+// Github:      https://github.com/richard01000/HW2
 //
 
 #include <iostream>
 #include <string>
 #include <list>
+
+// mainMenuLoopTexts is for all the loop text displayed in the program.
+struct mainMenuLoopTexts {//must complete with variants
+    int userChoice = 0;
+    std::string textStart = "|===========================================|\n|Welcome to TUM's student management system!|\n|===========================================|\n\nWhat do you want to do?\n1 - General operations \n2 - Faculty operations\n3 - Student operations\n\n4 - Quit Program\n\nyour input> ";
+    std::string textGeneralOperations = "\n\n|==================|\n|General operations|\n|==================|\n\nWhat do you want to do?\n\n1 - create faculty\n2 - display faculties\n3 - search student and show faculty\n4 - display all faculties of a field\n\n5 - Back\n6 - Quit Program\n\nyour input> ";
+    std::string textFacultyOperations = "\n\n|==================|\n|Faculty operations|\n|==================|\n\nWhat do you want to do?\n\n1 - display enroled students\n2 - display graduated stundents\n3 - check if student belongs to faculty\n\n4 - Back\n5 - Quit Program\n\nyour input> ";
+    std::string textStudentOperations = "\n\n|==================|\n|Student operations|\n|==================|\n\nWhat do you want to do?\n\n1 -";
+    // astai pizdet aistea is la general operations
+    std::string textCreateFaculty;
+    std::string searchStundentFaculty;
+    std::string displayUniversityFaculties;
+    std::string displayAllFacultiesBelongingToAField;
+};
+mainMenuLoopTexts txt;//object to call anything from mainMenuLoopTexts
 
 class student {
     std::string firstName = "First Name: ";
@@ -33,15 +48,29 @@ class faculty {
         VETERINARY_MEDICINE
     };
 };
-// mainMenuLoopTexts is for all the loop text displayed in the program.
-struct mainMenuLoopTexts {//must complete with variants
-    std::string textStart = "|===========================================|\n|Welcome to TUM's student management system!|\n|===========================================|\n\nWhat do you want to do?\n1 - General operations \n2 - Faculty operations\n3 - Student operations\n\n4 - Quit Program\n\nyour input> ";
-    std::string textGeneralOperations = "\n\n|==================|\n|General operations|\n|==================|\n\nWhat do you want to do?\n\n1 - create faculty\n2 - display faculties\n3 - search student and show faculty\n4 - display all faculties of a field\n\n5 - Back\n6 - Quit Program\n\nyour input> ";
-    std::string textFacultyOperations = "\n\n|==================|\n|Faculty operations|\n|==================|\n\nWhat do you want to do?\n\n1 - display enroled students\n2 - display graduated stundents\n3 - check if student belongs to faculty\n\n4 - Back\n5 - Quit Program\n\nyour input> ";
-    std::string textStudentOperations = "\n\n|==================|\n|Student operations|\n|==================|\n\nWhat do you want to do?\n\n1 -";
+class generalOperations{
+    std::list<std::string> faculties;
+    public:
+    generalOperations(){// pinace lucreaza sa pun elemente in lista amu prosta treb de facut mai multe liste si gt cu huitaua asta
+        std::cout<<txt.textGeneralOperations;
+        std::cin>>txt.userChoice;
+        if(txt.userChoice==1){
+            std::string da;
+            std::cout<<txt.textStudentOperations;
+            std::cin >> da;
+            faculties.push_back(da);
+            std::cin >> da;
+            faculties.push_back(da);
+            for(std::string a : faculties){// variabila (string a) ia valoarea fiecariu element din faculties (range based loop77)
+               std::cout<<a<<std::endl;
+            }
+
+        }
+    
+    }
 };
 int main() {
-    mainMenuLoopTexts txt; //object to call any loop textStart
+    generalOperations();
     //
     //  test loop texts
     //
