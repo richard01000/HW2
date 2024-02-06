@@ -1,6 +1,6 @@
 #include <iostream>                 // Author:          Potop Richard
 #include <string>                   // Description:     Student Management System
-#include <list>                     // Github:          https://github.com/richard01000/HW2
+#include <list>//instead of list must use <vector>                     // Github:          https://github.com/richard01000/HW2
 
 int userChoice = 0;//this together with mainMenuLoopTexts must be placed somewhere else
 
@@ -45,7 +45,7 @@ class faculty {
 };
 class generalOperations{
     public:
-    std::list<std::string> faculties;
+    std::list<std::string> faculties;//     AAAAAAAAAAAAAAAAAAAAAAAAAAAA must remove list because its not random acces memory list AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     generalOperations(){// for now it works to input and output elements into a list now the only thing left here is to make more lists like this bitch
         std::cout<<"Testing for now --> ";
         std::cin>>userChoice;
