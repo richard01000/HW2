@@ -6,8 +6,8 @@
 #define OUT(var) std::cout<<var<<std::endl;
 #define IGNORE std::cin.ignore();
 
-// ADD POINTERS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+int g_mainMenuUserChoice = 0; // will nedd more global variables for bool states
+bool state = true;
 /* // il use this saveSystem later now i dont have brain for it
 void saveSystem() {// AAAAAAAAA this mf will be used later for saving into files (grade 9 task) it might need a class
 	std::ofstream saveFile("save.txt");
@@ -25,9 +25,6 @@ void saveSystem() {// AAAAAAAAA this mf will be used later for saving into files
 */
 
 class allClasses {
-public:
-	int mainMenuUserChoice = 0;
-	int* mainMenuUserChoicePointer = &mainMenuUserChoice;
 protected:
 	class generalVariables {
 		std::vector<std::string> faculties;
@@ -76,24 +73,29 @@ public:
 	}
 
 	void facultyOpertations() {
-		bool state = true;
-		while (state == true) {
-			std::cin >> *mainMenuUserChoicePointer;
-			switch (*mainMenuUserChoicePointer) {
+		while (*statePointer == true) {
+			std::cin >> g_mainMenuUserChoice;
+			switch (g_mainMenuUserChoice) {
 			case 1:
-				std::cout << std::endl << "Enrolled students:" << std::endl;
+				std::cout << "\nCreate and assign a student to a faculty:\n";
 				break;
 			case 2:
-				std::cout << std::endl << "Graduated students:" << std::endl;
+				std::cout << "\nGraduate a student from a faculty:\n";
 				break;
-			case 3:
-				std::cout << std::endl << "Search student by email:" << std::endl; // maybe add choices to search by first name/last name/email
+			case 3:           // (Graduates would be ignored)
+				std::cout << "\nDisplay current enrolled students:\n"; // maybe add choices to search by first name/last name/email
 				break;
-			case 4:
+			case 4:           // (Currently enrolled students would be ignored).
+				std::cout << "\nDisplay graduates:\n";
+				break;
+			case 5:
+				std::cout << "\nTell or not if a student belongs to a faculty:\n";
+				break;
+			case 6:
 				std::cout << "\nGoing back\n";
 				state = false;
 				break;
-			case 5:
+			case 7:
 				std::cout << "\nQuiting\n";
 				exit(0);
 			default:
@@ -102,11 +104,10 @@ public:
 		}
 	}
 
-	void studentOperations() {      // THIS IS NOT DONE
-		bool state = true;      // I THINK ITS TIME TO USE POINTERS HERE
-		while (state == true) {
-			std::cin >> *mainMenuUserChoicePointer;
-			switch (*mainMenuUserChoicePointer) {
+	void studentOperations() {
+		while (*statePointer == true) {
+			std::cin >> g_mainMenuUserChoice;
+			switch (g_mainMenuUserChoice) {
 			case 1:
 
 				break;
@@ -131,22 +132,21 @@ public:
 };
 
 int main() {
-	allClasses variable;
 	allOperations function;
-	while (true) {
+	while (*statePointer == true) {
 		std::cout << "\n|===========================================|\n|Welcome to TUM's student management system!|\n|===========================================|\n\nWhat do you want to do?\n1 - General operations \n2 - Faculty operations\n3 - Student operations\n\n4 - Quit Program\n\nyour input> ";
-		std::cin >> variable.mainMenuUserChoice;// stupid cunt dosen't want to take the pointer
-		switch (variable.mainMenuUserChoice) {//switch to manage all the text that could be accessed in the main menu
+		std::cin >> g_mainMenuUserChoice;
+		switch (g_mainMenuUserChoice) {
 		case 1:
 			std::cout << "\n\n|==================|\n|General operations|\n|==================|\n\nWhat do you want to do?\n\n1 - create faculty\n2 - display faculties\n3 - search student and show faculty\n4 - display all faculties of a field\n\n5 - Back\n6 - Quit Program\n\nyour input> ";
 			function.generalOperations();// this is empty !!!
 			break;
 		case 2:
-			std::cout << "\n\n|==================|\n|Faculty operations|\n|==================|\n\nWhat do you want to do?\n\n1 - display enroled students\n2 - display graduated stundents\n3 - check if student belongs to faculty\n\n4 - Back\n5 - Quit Program\n\nyour input> ";
+			std::cout << "\n\n|==================|\n|Faculty operations|\n|==================|\n\nWhat do you want to do?\n\n1 - Create and assign a student to a faculty\n2 - Graduate a student from a faculty\n3 - Display current enrolled students\n4 - Display graduates\n5 - Tell or not if a student belongs to a faculty\n\n6 - Back\n7 - Quit Program\n\nyour input> ";
 			function.facultyOpertations();
 			break;
 		case 3:
-			std::cout << "\n\n|==================|\n|Student operations|\n|==================|\n\nWhat do you want to do?\n\n1 - add a new student\n2 - remove a student\n3 - change information of a student\n\n4 - Back\n\n5 - Quit Program\n\nyour input>";// i will die while making this
+			std::cout << "\n\n|==================|\n|Student operations|\n|==================|\n\nWhat do you want to do?\n\n1 - add a new student\n2 - remove a student\n3 - change information of a student\n\n4 - Back\n\n5 - Quit Program\n\nyour input>";
 			function.studentOperations();
 			break;
 		case 4:
