@@ -10,7 +10,6 @@ int g_mainMenuUserChoice = 0; // will nedd more global variables for bool states
 bool g_mainMenuState = true;
 bool g_generalMenuState = false;
 bool g_facultyMenuState = false;
-bool g_studentMenuState = false;
 /* // il use this saveSystem later now i dont have brain for it
 void saveSystem() {// AAAAAAAAA this mf will be used later for saving into files (grade 9 task) it might need a class
 	std::ofstream saveFile("save.txt");
@@ -21,65 +20,47 @@ void saveSystem() {// AAAAAAAAA this mf will be used later for saving into files
 class allClasses {
 protected:
 	class generalVariables {
-		std::vector<std::string> faculties;
+		std::vector<std::string> faculties; // will contain: facultyName / abbreviation / students (pick a list) / studyField
 	};
 
 	class facultyVariables {
-		std::string facultyName;
-		std::string facultyAbbreviation;
-		std::vector<std::string> students{
-			"1",
-			"2",
-			"3"
-		};
-		std::vector<std::string> studyField{
-			"MECHANICAL_ENGINEERING"
-			"SOFTWARE_ENGINEERING"
-			"FOOD_TECHNOLOGY"
-			"URBANISM_ARCHITECTURE"
-			"VETERINARY_MEDICINE"
-		};
-	};
-
-	class studentVariables {
-	protected:
-		std::string firstName;
-		std::string lastName;
-		std::string email;
-		std::string enrollmentDate;
-		std::string dateOfBirth;
+		std::string enrolledStudents; // will contain: firstName / lastName / email / enrollementDate / dateOFBirth
+		std::string graduatedStudents;
+		std::string studentFaculty;
+		std::vector<std::string> students;
 	};
 };
 
 class allOperations : public allClasses {
 public:
+	void quitOption() {
+		std::cout << "\nQuiting\n";
+		exit(0);
+	}
+
 	void generalOperations() {
 		while (g_generalMenuState == true) {
 			std::cin >> g_mainMenuUserChoice;
 			switch (g_mainMenuUserChoice) {
 			case 1:
 				std::cout << "\n1 - Create a new faculty:\n";
-
 				break;
 			case 2:
 				std::cout << "\n2 - Search what faculty a student belongs to by a unique identifier:\n"; //  (for example by email or a unique ID).
-
 				break;
 			case 3:
 				std::cout << "\n3 - Display University faculties:\n";
-
 				break;
 			case 4:
 				std::cout << "\n4 - Display all faculties belonging to a field:\n";
-
 				break;
 			case 5:
 				std::cout << "\n5 - Going back\n";
-
+				g_generalMenuState = false;
+				g_mainMenuState = true;
 				break;
 			case 6:
-				std::cout << "\n6 - Quiting\n";
-				exit(0);
+				quitOption();
 			default:
 				std::cout << "\nError incorrect input pick between 1 and 5\n";
 			}
@@ -102,23 +83,18 @@ public:
 			switch (g_mainMenuUserChoice) {
 			case 1:
 				std::cout << "\n1 - Create and assign a student to a faculty:\n";
-
 				break;
 			case 2:
 				std::cout << "\n2 - Graduate a student from a faculty:\n";
-
 				break;
 			case 3:           // (Graduates would be ignored)
-				std::cout << "\n3 - Display current enrolled students:\n"; // maybe add choices to search by first name/last name/email
-
+				std::cout << "\n3 - Display current enrolled students:\n";
 				break;
 			case 4:           // (Currently enrolled students would be ignored).
 				std::cout << "\n4 - Display graduates:\n";
-
 				break;
 			case 5:
 				std::cout << "\n5 - Tell or not if a student belongs to a faculty:\n";
-
 				break;
 			case 6:
 				std::cout << "\n6 - Going back\n";
@@ -126,35 +102,7 @@ public:
 				g_mainMenuState = true;
 				break;
 			case 7:
-				std::cout << "\n7 - Quiting\n";
-				exit(0);
-			default:
-				std::cout << "\nError incorrect input pick between 1 and 5\n";
-			}
-		}
-	}
-
-	void studentOperations() {
-		while (g_studentMenuState == true) {
-			std::cin >> g_mainMenuUserChoice;
-			switch (g_mainMenuUserChoice) {
-			case 1:
-
-				break;
-			case 2:
-
-				break;
-			case 3:
-
-				break;
-			case 4:
-				std::cout << "\nGoing back\n";
-				g_studentMenuState = false;
-				g_mainMenuState = true;
-				break;
-			case 5:
-				std::cout << "\nQuiting\n";
-				exit(0);
+				quitOption();
 			default:
 				std::cout << "\nError incorrect input pick between 1 and 5\n";
 			}
@@ -165,7 +113,7 @@ public:
 int main() {
 	allOperations function;
 	while (g_mainMenuState == true) {
-		std::cout << "\n|===========================================|\n|Welcome to TUM's student management system!|\n|===========================================|\n\nWhat do you want to do?\n1 - General operations \n2 - Faculty operations\n3 - Student operations\n\n4 - Quit Program\n\nyour input> ";
+		std::cout << "\n|===========================================|\n|Welcome to TUM's student management system!|\n|===========================================|\n\nWhat do you want to do?\n1 - General operations \n2 - Faculty operations\n\n3 - Quit Program\n\nyour input> ";
 		std::cin >> g_mainMenuUserChoice;
 		switch (g_mainMenuUserChoice) {
 		case 1:
@@ -181,14 +129,7 @@ int main() {
 			function.facultyOpertations();
 			break;
 		case 3:
-			std::cout << "\n\n|==================|\n|Student operations|\n|==================|\n\nWhat do you want to do?\n\n1 - add a new student\n2 - remove a student\n3 - change information of a student\n\n4 - Back\n\n5 - Quit Program\n\nyour input>";
-			g_mainMenuState = false;
-			g_studentMenuState = true;
-			function.studentOperations(); // fuck knows what to put inside this function
-			break;
-		case 4:
-			std::cout << "\nQuiting";
-			exit(0);
+			function.quitOption();
 		default:
 			std::cout << "\nError incorrect input pick between 1 and 4\n";
 		}
