@@ -6,21 +6,27 @@
 #define OUT(var) std::cout<<var<<std::endl;
 #define IGNORE std::cin.ignore();
 
-int g_mainMenuUserChoice = 0; // will nedd more global variables for bool states
+int g_mainMenuUserChoice = 0;
 bool g_mainMenuState = true;
 bool g_generalMenuState = false;
 bool g_facultyMenuState = false;
-/* // il use this saveSystem later now i dont have brain for it
-void saveSystem() {// AAAAAAAAA this mf will be used later for saving into files (grade 9 task) it might need a class
-	std::ofstream saveFile("save.txt");
-	saveFile << "aue"; QsaveFile.close();
 
-	std::ofstream logFile("log.txt"); logFile.close();         // AAAAAAAAA will need to create a log system for all the important changes (grade 10 task)
-}*/
+/*class fileManager {
+protected:
+	void saveSystem(std::string a) {
+		std::ofstream saveFile("save.txt");
+		for (int i = 0; i < 1; i++) {
+			saveFile << a << std::endl;
+			saveFile.close();
+		}
+	}
+};*/
+
 class allClasses {
 protected:
 	class generalVariables {
-		std::vector<std::string> faculties; // will contain: facultyName / abbreviation / students (pick a list) / studyField
+	public:
+		std::string faculties; // will contain: facultyName / abbreviation / students (pick a list) / studyField
 	};
 
 	class facultyVariables {
@@ -31,7 +37,7 @@ protected:
 	};
 };
 
-class allOperations : public allClasses {
+class allOperations : public allClasses/*, public fileManager */ {
 public:
 	void quitOption() {
 		std::cout << "\nQuiting\n";
@@ -39,6 +45,7 @@ public:
 	}
 
 	void generalOperations() {
+		generalVariables obj;
 		while (g_generalMenuState == true) {
 			std::cin >> g_mainMenuUserChoice;
 			switch (g_mainMenuUserChoice) {
@@ -63,18 +70,9 @@ public:
 				quitOption();
 			default:
 				std::cout << "\nError incorrect input pick between 1 and 5\n";
+				break;
 			}
 		}
-		//std::string listElement;
-		//std::cout << "Enter faculty: ";
-		//IGNORE;        // if i dont use cin.ingnore(); then the program is bitching and is skiping the getline(); ending the program
-		//getline(std::cin, listElement);
-		//faculties.push_back(listElement);
-		//this if for showing the list of faculties
-		//for (std::string a : faculties) {// the variable (string a) takes the value of the components inside faculties one by one and goes trough loop (range based loop77)
-			//std::cout << a << std::endl;
-		//}
-	//}
 	}
 
 	void facultyOpertations() {
@@ -87,11 +85,11 @@ public:
 			case 2:
 				std::cout << "\n2 - Graduate a student from a faculty:\n";
 				break;
-			case 3:           // (Graduates would be ignored)
-				std::cout << "\n3 - Display current enrolled students:\n";
+			case 3:
+				std::cout << "\n3 - Display current enrolled students:\n";// (Graduates would be ignored)
 				break;
-			case 4:           // (Currently enrolled students would be ignored).
-				std::cout << "\n4 - Display graduates:\n";
+			case 4:
+				std::cout << "\n4 - Display graduates:\n";// (Currently enrolled students would be ignored).
 				break;
 			case 5:
 				std::cout << "\n5 - Tell or not if a student belongs to a faculty:\n";
@@ -105,6 +103,7 @@ public:
 				quitOption();
 			default:
 				std::cout << "\nError incorrect input pick between 1 and 5\n";
+				break;
 			}
 		}
 	}
