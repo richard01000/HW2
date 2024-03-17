@@ -1,0 +1,187 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <chrono>
+#include <thread>
+#include <vector>
+#include <filesystem>
+
+using namespace std;
+
+const string FOLDER_PATH = "path/to/folder";  // Update this with the actual folder path
+
+// Base class for file monitoring
+class FileMonitor {
+public:
+    virtual void info() = 0;
+    virtual void commit() = 0;
+    virtual bool hasChanged() = 0;
+};
+
+// Derived class for text file monitoring
+class TextFileMonitor : public FileMonitor {
+private:
+    string filePath;
+    string filename;
+    string extension;
+    string prevContent;
+    chrono::system_clock::time_point snapshotTime;
+
+    string getCurrentContent() {
+        ifstream file(filePath);
+        if (file.good()) {
+            string content((istreambuf_iterator<char>(file)), (istreambuf_iterator<char>()));
+            return content;
+        }
+        return "";
+    }
+
+public:
+    explicit TextFileMonitor(const string& path) : filePath(path), snapshotTime(chrono::system_clock::now()) {
+        size_t dotIndex = filePath.find_last_of('.');
+        filename = filePath.substr(filePath.find_last_of("/\\") + 1, dotIndex - (filePath.find_last_of("/\\") + 1));
+        extension = filePath.substr(dotIndex + 1);
+        prevContent = getCurrentContent();
+    }
+
+    void info() override {
+        cout << "File information:" << endl;
+        cout << "Filename: " << filename << endl;
+        cout << "Extension: " << extension << endl;
+        cout << "Created: " << filesystem::last_write_time(filePath) << endl;
+        cout << "Updated: " << snapshotTime << endl;
+        // Additional info specific to text files can be added here
+    }
+
+    void commit() override {
+        snapshotTime = chrono::system_clock::now();
+        prevContent = getCurrentContent();
+    }
+
+    bool hasChanged() override {
+        string currentContent = getCurrentContent();
+        return prevContent != currentContent;
+    }
+};
+
+// Derived class for image file monitoring
+class ImageFileMonitor : public FileMonitor {
+private:
+    string filePath;
+    string filename;
+    string extension;
+    chrono::system_clock::time_point snapshotTime;
+    // Additional member variables for image-specific information can be added here
+
+public:
+    explicit ImageFileMonitor(const string& path) : filePath(path), snapshotTime(chrono::system_clock::now()) {
+        size_t dotIndex = filePath.find_last_of('.');
+        filename = filePath.substr(filePath.find_last_of("/\\") + 1, dotIndex - (filePath.find_last_of("/\\") + 1));
+        extension = filePath.substr(dotIndex + 1);
+    }
+
+    void info() override {
+       cout << "File information:" << endl;
+        cout << "Filename: " << filename << endl;
+        cout << "Extension: " << extension << endl;
+        cout << "Image size: TODO" << endl;
+        cout << "Created: " << filesystem::last_write_time(filePath) << endl;
+        cout << "Updated: " << snapshotTime << endl;
+        // Additional image-specific info can be added here
+    }
+
+    void commit() override {
+        snapshotTime = chrono::system_clock::now();
+    }
+
+    bool hasChanged() override {
+        // Image-specific change detection logic goes here
+        return false;
+    }
+};
+
+// Class for managing file monitoring
+class FileManager {
+private:
+    vector<FileMonitor*> monitors;
+
+    FileMonitor* getMonitorByFilename(const string& filename) {
+        for (FileMonitor* monitor : monitors) {
+            if (monitor->getFilename() == filename) {
+                return monitor;
+            }
+        }
+        return nullptr;
+    }
+
+public:
+    FileManager() = default;
+    ~FileManager() {
+        for (FileMonitor* monitor : monitors) {
+            delete monitor;
+        }
+    }
+
+    void addFileMonitor(FileMonitor* monitor) {
+        monitors.push_back(monitor);
+    }
+
+    void interact() {
+        bool running = true;
+        while (running) {
+            string command;
+            cout << "Enter a command (commit, info [filename], status, exit): ";
+            cin >> command;
+
+            if (command == "commit") {
+                for (FileMonitor* monitor : monitors) {
+                    monitor->commit();
+                }
+                cout << "Commit successful." << endl;
+            }
+            else if (command == "info") {
+                string filename;
+                cin >> filename;
+                FileMonitor* monitor = getMonitorByFilename(filename);
+                if (monitor) {
+                    monitor->info();
+                }
+                else {
+                    cout << "File not found." << endl;
+                }
+            }
+            else if (command == "status") {
+                cout << "Status:" << endl;
+                for (FileMonitor* monitor : monitors) {
+                    cout << "Filename: " << monitor->getFilename() << endl;
+                    if (monitor->hasChanged()) {
+                        cout << "Changed during snapshot time." << endl;
+                    }
+                    else {
+                        cout << "Not changed during snapshot time." << endl;
+                    }
+                }
+            }
+            else if (command == "exit") {
+                running = false;
+            }
+            else {
+                cout << "Invalid command." << endl;
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    FileManager fileManager;
+
+    // Add different file monitors to the manager
+    fileManager.addFileMonitor(new TextFileMonitor(FOLDER_PATH + "/file1.txt"));
+    fileManager.addFileMonitor(new ImageFileMonitor(FOLDER_PATH + "/image1.png"));
+
+    // Start interactive command line
+    fileManager.interact();
+
+    return 0;
+}
